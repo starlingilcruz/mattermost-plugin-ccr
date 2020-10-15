@@ -5,8 +5,6 @@ import React from 'react';
 
 import LocalizedIcon from 'components/localized_icon';
 
-// import {t} from 'utils/i18n';
-
 type Props = {
     text: React.ReactNode;
 }
@@ -15,7 +13,7 @@ export default class LoadingSpinner extends React.PureComponent<Props> {
     public static defaultProps: Props = {
         text: null,
     }
-    //t('generic_icons.loading')
+
     public render() {
         return (
             <span

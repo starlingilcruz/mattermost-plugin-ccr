@@ -1,7 +1,10 @@
 import { id, manifest } from './manifest';
 import { FormattedMessage } from 'react-intl';
+import { submitInteractiveDialog } from 'mattermost-redux/actions/integrations';
 
 import ChannelModeration from './components/channel_moderation/channel_moderation';
+import FooterWrapper from 'components/channel_moderation/footer/footer_wrapper';
+
 const Icon = () => <i className='icon fa fa-cog'/>;
 
 export default class Plugin {
@@ -9,13 +12,23 @@ export default class Plugin {
         registry.registerChannelHeaderButtonAction(
             <Icon />,
             (channel) => window.openInteractiveDialog({
-              component:
-                <ChannelModeration
-                  teamId={channel.team_id}
-                  channelId={channel.id}
-                />,
               dialog: {
                 title: 'Channel Moderation',
+                body_wrapper:
+                  <ChannelModeration
+                    channel={channel}
+                  />,
+                footer_wrapper:
+                  <FooterWrapper
+                    text={"Done"}
+                    onSubmit={store.dispatch(submitInteractiveDialog({
+                        url: "",
+                        callback_id: "callbackId",
+                        state: "",
+                        submission: "values",
+                    }))}
+                  >
+                  </FooterWrapper>
               },
             }),
             "Channel Moderation",

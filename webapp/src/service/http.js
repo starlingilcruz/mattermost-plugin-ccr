@@ -9,13 +9,13 @@ export default class HttpClient {
         this.baseURL = `/plugins/${id}/api`;
     }
 
-    getUserFilterKeys = async () => {
-      return this.httpGet(`${this.baseURL}/user/keys`);
+    getUserFilterGroups = async () => {
+      return this.httpGet(`${this.baseURL}/user/groups`);
     }
 
-    getChannelUsersByKey = async (teamId, channelId, key) => {
+    getChannelUsersByGroup = async (teamId, channelId, group) => {
       return this.httpPost(`${this.baseURL}/filter/user`, {
-        teamId, channelId, key
+        teamId, channelId, group
       });
     }
 
@@ -61,7 +61,3 @@ export default class HttpClient {
         }
     }
 }
-
-// const Client = new HttpClient();
-//
-// export default Client;
