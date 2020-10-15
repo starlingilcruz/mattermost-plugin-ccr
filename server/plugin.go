@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	API_USER_FILTER_KEY_PATH          = "/api/user/keys"
+	API_USER_FILTER_GROUP_PATH          = "/api/user/groups"
 	API_USER_FILTER_PATH              = "/api/filter/user"
 	API_CHANNEL_ROLES_PATH            = "/api/channel/roles"
 	API_UPDATE_USER_CHANNEL_ROLE_PATH = "/api/user/channel/update_roles"
@@ -33,14 +33,14 @@ type Plugin struct {
 // 	FetchChannelUsersByKey(endpoint string, channelId string, key string) UsersMetadata
 // }
 
-type UserFilterKey struct {
+type UserFilterGroup struct {
 	Id          string `json:"id"`
 	DisplayName string `json:"display_name"`
 	Description string `json:"description"`
 }
 
-type FilterKeysHttpResponse struct {
-  Keys []UserFilterKey `json:"keys"`
+type FilterGroupsHttpResponse struct {
+  Groups []UserFilterGroup `json:"groups"`
 }
 
 type Role struct {

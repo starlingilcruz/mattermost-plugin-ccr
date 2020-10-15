@@ -2,16 +2,12 @@ package main
 
 import (
   "net/http"
-
 	"encoding/json"
   "io/ioutil"
-
-	// "github.com/mattermost/mattermost-server/v5/model"
-
 )
 
-func (p *Plugin) FetchUserFilterKeys() FilterKeysHttpResponse {
-  var response FilterKeysHttpResponse
+func (p *Plugin) FetchUserFilterGroups() FilterGroupsHttpResponse {
+  var response FilterGroupsHttpResponse
 
   r, err := http.Get(p.getConfiguration().UserFilterKeysEndpoint)
 
@@ -40,24 +36,28 @@ func (p *Plugin) FetchChannelUsers(endpoint string, channelId string) UsersMetad
   r, err := http.Get(endpoint)
 
   if err != nil {
-    return usersMetadata
+    return nil
   }
 
   b, err := ioutil.ReadAll(r.Body)
   defer r.Body.Close()
 
   if err != nil {
-    return usersMetadata
+    return nil
   }
 
   var response UserFilterHttpResponse
 
   err = json.Unmarshal(b, &response)
   if err != nil {
-    return usersMetadata
+    return nil
   }
 
   if members, err := p.API.GetChannelMembersByIds(channelId, response.Ids); err == nil {
+
+    if members == nil {
+      return nil
+    }
 
     for _, member := range *members {
       user, err := p.API.GetUser(member.UserId)
@@ -66,10 +66,6 @@ func (p *Plugin) FetchChannelUsers(endpoint string, channelId string) UsersMetad
       }
 
       usersMetadata = append(usersMetadata, UserMetadata{*user, member})
-
-      // usersMetadata.Append(UserMetadata{*user, member})
-
-      p.API.LogWarn(member.UserId)
     }
   }
 

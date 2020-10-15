@@ -12,30 +12,30 @@ import (
 */
 
 func (p *Plugin) ServeHTTP(c *plugin.Context, w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
   config := p.getConfiguration()
 	if err := config.IsValid(); err != nil {
 		http.Error(w, "This plugin is not configured.", http.StatusNotImplemented)
 		return
 	}
 
-  w.Header().Set("Content-Type", "application/json")
-
   switch r.URL.Path {
-  case API_USER_FILTER_KEY_PATH:
-    p.getUserFilterKeys(w, r)
-  case API_USER_FILTER_PATH:
-    p.filterChannelUserByKey(w, r)
-  case API_CHANNEL_ROLES_PATH:
-    p.getChannelRoles(w, r)
-  case API_UPDATE_USER_CHANNEL_ROLE_PATH:
-    p.updateUserChannelRoles(w, r)
-  default:
-		http.NotFound(w, r)
-  }
+	  case API_USER_FILTER_GROUP_PATH:
+	    p.getUserFilterGroups(w, r)
+	  case API_USER_FILTER_PATH:
+	    p.filterChannelUserByGroup(w, r)
+	  case API_CHANNEL_ROLES_PATH:
+	    p.getChannelRoles(w, r)
+	  case API_UPDATE_USER_CHANNEL_ROLE_PATH:
+	    p.updateUserChannelRoles(w, r)
+	  default:
+			http.NotFound(w, r)
+	}
 }
 
-func (p *Plugin) getUserFilterKeys(w http.ResponseWriter, r *http.Request) {
-  filterKeys := p.FetchUserFilterKeys()
+func (p *Plugin) getUserFilterGroups(w http.ResponseWriter, r *http.Request) {
+  filterKeys := p.FetchUserFilterGroups()
 
   b, err := json.Marshal(filterKeys)
   if err != nil {
@@ -46,12 +46,12 @@ func (p *Plugin) getUserFilterKeys(w http.ResponseWriter, r *http.Request) {
   w.Write(b)
 }
 
-func (p *Plugin) filterChannelUserByKey(w http.ResponseWriter, r *http.Request) {
+func (p *Plugin) filterChannelUserByGroup(w http.ResponseWriter, r *http.Request) {
   props := p.MapFromJson(r.Body)
 
   teamId := props["teamId"]
   channelId := props["channelId"]
-  key := props["key"]
+  group := props["group"]
 
   team, err := p.API.GetTeam(teamId)
 
@@ -61,9 +61,13 @@ func (p *Plugin) filterChannelUserByKey(w http.ResponseWriter, r *http.Request) 
   }
 
   serviceEndpoint := p.getConfiguration().UserFilterEndpoint
-  serviceEndpoint = p.AddTeamToURL(serviceEndpoint, team.Name) + "/" + key
+  serviceEndpoint = p.AddTeamToURL(serviceEndpoint, team.Name) + "/" + group
 
   usersMetadata := p.FetchChannelUsers(serviceEndpoint, channelId)
+
+	if usersMetadata == nil {
+		return
+	}
 
   w.Write([]byte(usersMetadata.ToJson()))
 }
