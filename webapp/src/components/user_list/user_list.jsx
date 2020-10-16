@@ -115,8 +115,7 @@ export default class UserList extends React.PureComponent {
                   id='user_list.countTotalPage'
                   defaultMessage='Showing {count, number} {count, plural, one {member} other {members}}'
                   values={{
-                      count,
-                      total
+                      count
                   }}
               />
             </Grid>
@@ -133,7 +132,15 @@ export default class UserList extends React.PureComponent {
             </Grid>
           </Grid>
         )}
+
         {UserRows}
+
+        {!showGridHeader && count === 0 && (
+          <FormattedMessage
+              id='user_list.notFound'
+              defaultMessage='No users found'
+          />
+        )}
       </React.Fragment>
     );
   }

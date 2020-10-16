@@ -1,7 +1,8 @@
 import {connect} from 'react-redux';
-// import {bindActionCreators, Dispatch, ActionCreatorsMapObject} from 'redux';
+import {bindActionCreators} from 'redux';
 import {Channel, ChannelMembership} from 'mattermost-redux/types/channels';
 // import {ActionFunc} from 'mattermost-redux/types/actions';
+import {submitInteractiveDialog} from 'mattermost-redux/actions/integrations';
 
 import ChannelModeration from './channel_moderation';
 
@@ -17,6 +18,14 @@ import ChannelModeration from './channel_moderation';
 const mapStateToProps = (state) => ({
     channel: state.channel
 });
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators({
+            submitInteractiveDialog,
+        }, dispatch),
+    };
+}
 //
 // type Actions = {
 //     getChannelMembers: (channelId: string) => Promise<{data: ChannelMembership[]}>;
@@ -30,4 +39,4 @@ const mapStateToProps = (state) => ({
 //     };
 // }
 
-export default connect(mapStateToProps)(ChannelModeration);
+export default connect(mapStateToProps, mapDispatchToProps)(ChannelModeration);

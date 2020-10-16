@@ -34,17 +34,17 @@ const manifestStr = `
     "settings": [
       {
         "key": "UserFilterKeysEndpoint",
-        "display_name": "User Filter Keys API Endpoint",
+        "display_name": "User Filter Groups API Endpoint",
         "type": "text",
-        "help_text": "Endpoint to request for vendor user information.",
-        "placeholder": "https://api.service.com/\u003cteam_slug\u003e/filter/user/keys",
+        "help_text": "Endpoint to request for user filter groups.",
+        "placeholder": "https://api.service.com/\u003cteam_slug\u003e/filter/user/groups",
         "default": null
       },
       {
         "key": "UserFilterEndpoint",
         "display_name": "User Filter API Endpoint",
         "type": "text",
-        "help_text": "Endpoint to request users filter keys",
+        "help_text": "Endpoint to request filter users by group.",
         "placeholder": "https://api.service.com/\u003cteam_slug\u003e/filter/user/\u003ckey\u003e",
         "default": null
       },
