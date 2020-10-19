@@ -1,7 +1,7 @@
 {
-    "id": "com.mattermost.plugin-starter-template",
-    "name": "Plugin Starter Template",
-    "description": "This plugin serves as a starting point for writing a Mattermost plugin.",
+    "id": "cloudgeex.mattermost.ccr",
+    "name": "Channel Moderation",
+    "description": "This plugin can extends third-party service functionalities to manage the actions that each member of the channels can perform.",
     "version": "0.1.0",
     "min_server_version": "5.12.0",
     "server": {
@@ -17,6 +17,29 @@
     "settings_schema": {
         "header": "",
         "footer": "",
-        "settings": []
+        "settings": [{
+          "key": "UserFilterKeysEndpoint",
+          "display_name": "User Filter Groups API Endpoint",
+          "type": "text",
+          "help_text": "Endpoint to request for user filter groups.",
+          "placeholder": "https://api.service.com/<team_slug>/filter/user/groups",
+          "default": null
+        },
+  			{
+          "key": "UserFilterEndpoint",
+          "display_name": "User Filter API Endpoint",
+          "type": "text",
+          "help_text": "Endpoint to request filter users by group.",
+          "placeholder": "https://api.service.com/<team_slug>/filter/user/<group>",
+          "default": null
+        },
+  			{
+          "key": "TeamChannelRolesEndpoint",
+          "display_name": "Team Channel Roles API Endpoint",
+          "type": "text",
+          "help_text": "Endpoint to request team channel roles",
+          "placeholder": "https://api.service.com/<team_slug>/channel/roles",
+          "default": null
+        }]
     }
 }

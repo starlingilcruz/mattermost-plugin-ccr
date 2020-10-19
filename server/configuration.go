@@ -18,6 +18,9 @@ import (
 // If you add non-reference types to your configuration struct, be sure to rewrite Clone as a deep
 // copy appropriate for your types.
 type configuration struct {
+	UserFilterKeysEndpoint   string
+	UserFilterEndpoint       string
+	TeamChannelRolesEndpoint string
 }
 
 // Clone shallow copies the configuration. Your implementation may require a deep copy if
@@ -25,6 +28,22 @@ type configuration struct {
 func (c *configuration) Clone() *configuration {
 	var clone = *c
 	return &clone
+}
+
+func (c *configuration) IsValid() error {
+	if len(c.UserFilterKeysEndpoint) == 0 {
+		return errors.New("Please configure ServiceEndpoint.")
+	}
+
+	if len(c.UserFilterEndpoint) == 0 {
+		return errors.New("Please configure UserFilterEndpoint.")
+	}
+
+	if len(c.TeamChannelRolesEndpoint) == 0 {
+		return errors.New("Please configure TeamChannelRolesEndpoint.")
+	}
+
+	return nil
 }
 
 // getConfiguration retrieves the active configuration under lock, making it safe to use
